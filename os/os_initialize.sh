@@ -1,9 +1,9 @@
 #!/bin/bash
 #===============================================================================
 #
-#          FILE: sys_env_install
+#          FILE: os_initialize.sh
 # 
-#         USAGE: ./sys_env_install
+#         USAGE: sh os_initialize.sh
 # 
 #   DESCRIPTION: 
 # 
@@ -11,7 +11,7 @@
 #  REQUIREMENTS: ---
 #          BUGS: ---
 #         NOTES: ---
-#        AUTHOR: xiaobo_l (), xiaobol9527@gmail.com
+#        AUTHOR: jianbin_c, 546391242@qq.com
 #  ORGANIZATION: 
 #       CREATED: 04/30/2014 16:24:08 
 #      REVISION:  ---
@@ -81,19 +81,16 @@ net.ipv4.tcp_synack_retries = 2
 net.ipv4.tcp_syn_retries = 2
 
 net.ipv4.tcp_tw_recycle = 1
-#net.ipv4.tcp_tw_len = 1
 net.ipv4.tcp_tw_reuse = 1
+net.ipv4.tcp_keepalive_time = 1200
+#net.ipv4.tcp_keepalive_time = 300
+#net.ipv4.tcp_tw_len = 1
+#net.ipv4.tcp_fin_timeout = 30
 
 net.ipv4.tcp_mem = 94500000 915000000 927000000
 net.ipv4.tcp_max_orphans = 3276800
 
-net.ipv4.tcp_tw_recycle = 1
-#net.ipv4.tcp_fin_timeout = 30
-net.ipv4.tcp_keepalive_time = 1200
-
-#net.ipv4.tcp_keepalive_time = 300
 net.ipv4.ip_local_port_range = 1024    65000
-
 vm.swappiness = 1
 EOF
 }
@@ -106,8 +103,7 @@ then
 mkdir /root/.ssh -p
 fi
 cat >>/root/.ssh/authorized_keys<<EOF
-ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAIEAw+d2Rbl082jjJO0SLMm1OVBXojPLpM2gCuDnMSCzdlruqHy+j7qWtG0OAjJCi9owARYQelpRVYSuqIQLngk3jLrq5wH8aqO3Nj7B0EttyCgzWL89D/xfsvmQxYbV5UWan+bPvM2xHbiHVH41VnVNkMTkRcFEZcA4yhuAmzU4Oik= chenjianbin
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjYj5QvyeshJyqd603XBhu7mTfLXQZILieI7GZSWpMfawN+U0LoXkQwulM2m6qiyBtVNtr829MhfTZNo8utKS7RJ3BuUJzNWGHuaXJLyMEGxeOqFudUoCt7cDoeI4UNa3MYoRfC1yBLE2HlUl3CXVIGfrgZSq1t97QFlLkeM20aB0npWndt6eur7HJYJPfa+PL0Aupg1b9EodLOzuOt0j2A0nKLwJByBfyorCoooX7dEFy1JtTrkJ5J9YVOI53mdI89HqvOz+of8Sarm+DPWOgnvMHnkVBc3y4zpidOv/uyqDbYKmEinjEoH40Aeenw1RLlkof4BM8eeJbKq9lMxUJ linxiaobo
+ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAz4c24g+jhaB1LTt/usrTIf9pYxr4IjJ3vLOc/tGnQnU+rr8RN68aPmYDIBQnlYFblTcJSLRV+HnyNgd+wQxTVxa8MaOOfFB/IGLyi9thV6SuNwgtcyJVTum+/24hgV0jYlQRCfsrS9jgoJIoiHE9qgxSzsbDZR9QENNmuAmogYSx79i+F91eBYF8I6FS+luQT7qb6mUzIPUg4f1O1yJNt1mASsxfWgZBuJ8cGQPbecNIewBNa5VtRYPmHSGkIkE6yWzp8OxmVA6p+FpHzf0UV5HoAsNYLEsCWt3OEF4v+ZPVlCtkG/KYoALBt41Ii/UuRC9YYo/Zs7jq5p1iRnbqow==  chenjianbin
 EOF
 if [ ${os_version} -eq 7 ]
 then
@@ -136,6 +132,8 @@ wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-${os_vers
 rpmforge_file=rpmforge-release-0.5.3-1.el${os_version}.rf.`uname -p`.rpm
 wget http://pkgs.repoforge.org/rpmforge-release/${rpmforge_file}
 rpm -ivh ${rpmforge_file}  --force
+
+yum clean all
 }
 
 function base_soft_install() {
