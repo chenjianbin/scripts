@@ -2,7 +2,7 @@
 set -o nounset
 set -o errexit
 
-Mysql_User=remote
+Mysql_User=backup
 Mysql_Pwd=a2bsdciEyMq9DkKo
 Mysql_Host=127.0.0.1
 Mysql_Dir=/data0/mysql
