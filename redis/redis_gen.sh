@@ -102,17 +102,25 @@ chmod 700 ${INSTANCEDIR}/redisd
 
 function gen_config(){
 cat >>${INSTANCEDIR}/redis.conf<<EOF
+################################## INCLUDES ###################################
+################################ GENERAL  #####################################
 daemonize yes
 pidfile ${INSTANCEDIR}/redis.pid
+bind 127.0.0.1
 port $PORT
 requirepass "$PASSWD"
 tcp-backlog 511
-bind 127.0.0.1
 timeout 0
-tcp-keepalive 0
+tcp-keepalive 60
 loglevel notice
 logfile ${LOGDIR}/redis.log
 databases 16
+# unixsocket /tmp/redis.sock
+# unixsocketperm 700
+# syslog-enabled no
+# syslog-ident redis
+# syslog-facility local0
+################################ SNAPSHOTTING  ################################
 save 900 1
 save 300 10
 save 60 10000
@@ -121,13 +129,21 @@ rdbcompression yes
 rdbchecksum yes
 dbfilename dump.rdb
 dir $DATADIR
-maxmemory 256000000
+################################# REPLICATION #################################
+# slaveof 192.168.1.1 6379
+# masterauth "xxxxxx"
 slave-serve-stale-data yes
 slave-read-only yes
+slave-priority 100
 repl-diskless-sync no
 repl-diskless-sync-delay 5
 repl-disable-tcp-nodelay no
-slave-priority 100
+################################### LIMITS ####################################
+maxclients 10000
+maxmemory 256000000
+# maxmemory-policy allkeys-lru
+# maxmemory-samples 5
+############################## APPEND ONLY MODE ###############################
 appendonly no
 appendfilename "appendonly.aof"
 appendfsync everysec
@@ -135,11 +151,16 @@ no-appendfsync-on-rewrite no
 auto-aof-rewrite-percentage 100
 auto-aof-rewrite-min-size 64mb
 aof-load-truncated yes
+################################ LUA SCRIPTING  ###############################
 lua-time-limit 5000
+################################## SLOW LOG ###################################
 slowlog-log-slower-than 10000
 slowlog-max-len 128
+################################ LATENCY MONITOR ##############################
 latency-monitor-threshold 0
+############################# EVENT NOTIFICATION ##############################
 notify-keyspace-events ""
+############################### ADVANCED CONFIG ###############################
 hash-max-ziplist-entries 512
 hash-max-ziplist-value 64
 list-max-ziplist-entries 512
