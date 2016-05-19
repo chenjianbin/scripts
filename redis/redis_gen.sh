@@ -7,6 +7,7 @@ REDIS_COMMAND=/usr/local/webserver/redis/bin
 BASEDIR=/data0/redis/${PORT}
 DATADIR=${BASEDIR}/data
 LOGDIR=${BASEDIR}/logs
+PASSWD=`openssl rand -base64 20`
 
 function gen_dir(){
 if [ -e $BASEDIR ]
@@ -43,6 +44,7 @@ cat >>${BASEDIR}/redis.conf<<EOF
 daemonize yes
 pidfile ${BASEDIR}/redis.pid
 port $PORT
+requirepass "$PASSWD"
 tcp-backlog 511
 bind 127.0.0.1
 timeout 0
