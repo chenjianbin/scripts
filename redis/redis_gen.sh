@@ -3,14 +3,14 @@ set -o nounset
 set -o errexit
 
 PORT=$1
-REDIS_COMMAND=/usr/local/webserver/redis/bin
-BASEDIR=/data0/redis/${PORT}
-DATADIR=${BASEDIR}/data
-LOGDIR=${BASEDIR}/logs
+BASEDIR=/usr/local/webserver/redis
+INSTANCEDIR=/data0/redis/${PORT}
+DATADIR=${INSTANCEDIR}/data
+LOGDIR=${INSTANCEDIR}/logs
 PASSWD=`openssl rand -base64 20`
 
 function gen_dir(){
-if [ -e $BASEDIR ]
+if [ -e $INSTANCEDIR ]
 then
  echo "The $PORT instance is exist!"
 else
@@ -22,27 +22,87 @@ fi
 }
 
 function gen_redisd(){
-cat >>${BASEDIR}/redisd <<EOF
+cat >>${INSTANCEDIR}/redisd <<EOF
 #!/bin/bash
-case \$1 in
-"start")
-        $REDIS_COMMAND/redis-server ${BASEDIR}/redis.conf;;
-"stop")
-        $REDIS_COMMAND/redis-cli -p $PORT shutdown;;
-"restart")
-        ${BASEDIR}/redisd stop
-        ${BASEDIR}/redisd start;;
-"*")
-        echo "usage: ${BASEDIR}/redisd {start|stop|restart}";;
+# chkconfig: 2345 50 30
+#
+# description: Redis service
+#
+#Script:Redis command
+ 
+Redisserver=$BASEDIR/bin/redis-server
+Rediscli=$BASEDIR/bin/redis-cli
+Redisconf=$INSTANCEDIR/redis.conf
+ 
+function_start()
+{
+    printf "start redis-server..."
+    \$Redisserver \$Redisconf &>/dev/null  & 
+    if [ \$? -eq 0 ];then
+        echo "runing"
+    fi
+}
+ 
+function_stop()
+{
+    printf "stop redis-server..."
+    \$Rediscli -p $PORT -a "$PASSWD" shutdown
+    if [ \$? -eq 0 ];then
+        echo "stop"
+    fi
+}
+ 
+function_restart()
+{
+    function_start
+    function_stop
+}
+ 
+function_kill()
+{
+    killall redis-server
+}
+ 
+function_status()
+{
+    a=\`ps -A|grep "redis-server\\>" -c\`
+    if [ \$a -ge 1 ];then
+        echo -e "The Redis is [\\e[0;32;5m runing \\e[0m]"
+    else
+        echo -e "The Redis is [\\e[0;31;5m not run \\e[0m]"
+    fi
+}
+ 
+case "\$1" in
+        start)
+                function_start
+                ;;
+        stop)
+                function_stop
+                ;;
+        restart)
+                function_stop
+                function_start
+                ;;
+        kill)
+                function_kill
+                ;;
+        status)
+                function_status
+                ;;
+              *)
+              echo "Usage: /etc/init.d/redis {start|stop|restart|kill|status}"
+             
 esac
+ 
+exit
 EOF
-chmod 755 ${BASEDIR}/redisd
 }
 
 function gen_config(){
-cat >>${BASEDIR}/redis.conf<<EOF
+cat >>${INSTANCEDIR}/redis.conf<<EOF
 daemonize yes
-pidfile ${BASEDIR}/redis.pid
+pidfile ${INSTANCEDIR}/redis.pid
 port $PORT
 requirepass "$PASSWD"
 tcp-backlog 511
