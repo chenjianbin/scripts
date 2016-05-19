@@ -97,6 +97,7 @@ esac
  
 exit
 EOF
+chmod 700 ${INSTANCEDIR}/redisd
 }
 
 function gen_config(){
