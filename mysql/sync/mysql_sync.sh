@@ -9,7 +9,7 @@ function dump() {
 }
 
 function load() {
-	mysql -u $SRC_USER -p$DEST_PASSWD -h $DEST_HOST -P $DEST_PORT $DBNAME <$BACKUP_DIR/$DBNAME.sql
+	mysql -C -u $SRC_USER -p$DEST_PASSWD -h $DEST_HOST -P $DEST_PORT $DBNAME <$BACKUP_DIR/$DBNAME.sql
 }
 
 function clearsqlfile() {
