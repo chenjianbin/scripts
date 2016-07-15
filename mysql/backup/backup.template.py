@@ -51,7 +51,7 @@ def clean():
 def email():
 	global MAIL_MSG
 	sender = 'send@wanjizhijia.com'
-	pwd = 'BOZfdV8O2zMuTStp'
+	pwd = 'xxxxxxxxx'
 	receivers = ['546391242@qq.com']
 	message = MIMEText(MAIL_MSG, 'html', 'utf-8')
 	message['From'] = Header('send@wanjizhijia.com', 'utf-8')

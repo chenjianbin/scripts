@@ -1,2 +1,3 @@
 python/
 config
+mysql/backup/backup.py
