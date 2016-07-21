@@ -20,6 +20,7 @@ def status(domain):
 			print(r.getcode())
 	except urllib.error.URLError as e:
 		print(e.code) if hasattr(e, 'code') else print(555)
+	#	print(e.code) if hasattr(e, 'code') else print(555)
 
 if __name__ == '__main__':
 	discover(WEB_PATH) if len(sys.argv) == 1 else status(sys.argv[1])
