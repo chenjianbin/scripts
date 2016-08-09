@@ -2,3 +2,4 @@ python/
 config
 mysql/backup/backup.py
 .svn
+**/__pycache__/
