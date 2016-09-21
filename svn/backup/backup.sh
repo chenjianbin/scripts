@@ -20,7 +20,7 @@ function backup(){
             echo "$DAY_BACKDIR is exists" >> $LOGFILE
         else
             mkdir -p $DAY_BACKDIR
-            svnadmin hotcopy $SVNDIR/$repo $DAY_BACKDIR && echo "[`date +%F`] success !" >> $LOGFILE
+            svnadmin hotcopy $SVNDIR/$repo $DAY_BACKDIR && echo "[`date +%F`] $repo backup success !" >> $LOGFILE
         fi
     done
 }
