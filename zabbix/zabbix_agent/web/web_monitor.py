@@ -19,7 +19,7 @@ def status(domain):
         with urllib.request.urlopen(req) as r:
             print(r.getcode())
     except urllib.error.URLError as e:
-        print(e.code) if hasattr(e, 'code') else print(555)
+        print(555)
         #with open('web.log','a') as logfile:
         #    logfile.write(str(e))
 
