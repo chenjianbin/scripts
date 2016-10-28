@@ -12,7 +12,7 @@ import datetime
 MYSQL_DIR = '/data0/mysql'
 ''' Backup_DataDir 千万别在根目录，否则会很悲催。'''
 BACKUP_DATADIR = '/data0/backups/mysql'
-CLEAN_DAY = 7
+CLEAN_DAY = 14
 MAIL_MSG = ''
 
 def backup():
