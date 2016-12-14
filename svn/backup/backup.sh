@@ -3,7 +3,7 @@ SVNDIR=/data0/svn
 BACKDIR=/data0/backups/svn
 LOGFILE=/data0/logs/svn/svn_backup.log
 
-R_ADDR=192.168.1.251
+R_ADDR=192.168.1.240
 R_BACKDIR=/data0/backups/
 
 
@@ -30,7 +30,7 @@ function clean(){
 }
 
 function sync(){
-    rsync -avP --delete $BACKDIR  $R_ADDR:/$R_BACKDIR
+    rsync -avP --delete $BACKDIR  $R_ADDR:$R_BACKDIR
 }
 
 backup
