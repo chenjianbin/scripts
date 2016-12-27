@@ -18,7 +18,7 @@ MAIL_MSG = ''
 def backup():
 	global MAIL_MSG
 	MAIL_MSG = MAIL_MSG + '<h1>数据库备份</h1>'
-	ports = [ PurePath(p).name for p in Path(MYSQL_DIR).glob('*') if p.is_dir() and re.match('[1-65535]', PurePath(p).name) ]
+	ports = [ PurePath(p).name for p in Path(MYSQL_DIR).glob('*') if p.is_dir() and re.fullmatch('[1-5]?[0-9]{1,4}', PurePath(d).name) ]
 	result_msg = {}
 	for port in ports:
 		mysql_defaults_file = Path(MYSQL_DIR) / port / 'my.cnf'	

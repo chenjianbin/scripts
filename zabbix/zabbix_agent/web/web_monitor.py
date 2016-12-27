@@ -5,6 +5,13 @@ import re
 import urllib.request
 import urllib.error
 import sys
+import logging
+
+logging.basicConfig(level=logging.DEBUG,
+                format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+                datefmt='%a, %d %b %Y %H:%M:%S',
+                filename='/data0/logs/zabbix_agent/web_monitor.log',
+                filemode='a')
 
 WEB_PATH = '/data0/web/'
 
@@ -20,8 +27,7 @@ def status(domain):
             print(r.getcode())
     except urllib.error.URLError as e:
         print(555)
-        #with open('web.log','a') as logfile:
-        #    logfile.write(str(e))
+        logging.error(str(e))
 
 if __name__ == '__main__':
     discover(WEB_PATH) if len(sys.argv) == 1 else status(sys.argv[1])
