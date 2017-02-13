@@ -16,7 +16,7 @@ logging.basicConfig(level=logging.DEBUG,
 WEB_PATH = '/data0/web/'
 
 def discover(path):
-    ports = [ {'{#WEBDOMAIN}':PurePath(p).name} for p in Path(path).glob('*') if p.is_dir() and re.match('.*\..*', PurePath(p).name) ]
+    ports = [ {'{#WEBDOMAIN}':p.name} for p in Path(path).glob('*') if p.is_dir() and re.match('.*\..*', p.name) ]
     print(json.dumps({'data':ports},sort_keys=True,indent=4,separators=(',',':')))
 
 def status(domain):
@@ -27,7 +27,8 @@ def status(domain):
             print(r.getcode())
     except urllib.error.URLError as e:
         print(555)
-        logging.error(str(e))
+        mes = '"{0}" DOMAIN {1}'.format(e, domain)
+        logging.error(mes)
 
 if __name__ == '__main__':
     discover(WEB_PATH) if len(sys.argv) == 1 else status(sys.argv[1])

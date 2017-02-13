@@ -18,7 +18,7 @@ MAIL_MSG = ''
 def backup():
 	global MAIL_MSG
 	MAIL_MSG = MAIL_MSG + '<h1>数据库备份</h1>'
-	ports = [ PurePath(p).name for p in Path(MYSQL_DIR).glob('*') if p.is_dir() and re.fullmatch('[1-5]?[0-9]{1,4}', PurePath(d).name) ]
+	ports = [ p.name for p in Path(MYSQL_DIR).glob('*') if p.is_dir() and re.fullmatch('[1-5]?[0-9]{1,4}', p.name) ]
 	result_msg = {}
 	for port in ports:
 		mysql_defaults_file = Path(MYSQL_DIR) / port / 'my.cnf'	
@@ -50,9 +50,9 @@ def clean():
 
 def email():
 	global MAIL_MSG
-	sender = 'send@wanjizhijia.com'
+	sender = 'xxxxx'
 	pwd = 'xxxxxxxxx'
-	receivers = ['546391242@qq.com']
+	receivers = ['xxxxx@qq.com']
 	message = MIMEText(MAIL_MSG, 'html', 'utf-8')
 	message['From'] = Header('send@wanjizhijia.com', 'utf-8')
 	message['To'] =  Header('Bice.', 'utf-8')
