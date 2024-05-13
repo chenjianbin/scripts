@@ -44,7 +44,7 @@ def backup():
 def clean():
     global MSG
     MSG = MSG + '清理过期备份\n'
-    for f in Path(BACKUP_DATADIR).glob('**/*.tar.gz'):
+    for f in Path(BACKUP_DATADIR).glob('**/*.xbstream'):
         if (f.stat().st_mtime + CLEAN_DAY * 24 * 3600) < time.time():
             MSG = MSG + 'Clean {} \n'.format(str(f))
             f.unlink()
