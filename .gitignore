@@ -3,3 +3,4 @@ config
 mysql/backup/backup.py
 .svn
 **/__pycache__/
+check/*.txt
