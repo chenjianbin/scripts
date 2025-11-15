@@ -1,4 +1,5 @@
 import whois
+import os
 import datetime
 import asyncio
 from telegram import Bot
@@ -42,10 +43,10 @@ async def check_domains(domains, token, chat_id):
 
 if __name__ == '__main__':
     # 配置参数
-    DOMAIN_FILE_PATH = '/data0/scripts/check/domains.txt'  # 包含域名列表的文件路径
-    TELEGRAM_BOT_TOKEN = '7351480691:AAG36djBjow7yepGJAduNkKYtC2qEMQIJBY'  # 替换为您的 Telegram Bot Token
-    TELEGRAM_CHAT_ID = '-4273555299'  # 替换为您的 Telegram Chat ID
+    TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+    TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
-    domains = read_domains(DOMAIN_FILE_PATH)
+    domain_file_path = f"{os.path.dirname(os.path.abspath(__file__))}/domains.txt"
+    domains = read_domains(domain_file_path)
     asyncio.run(check_domains(domains, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID))
 
